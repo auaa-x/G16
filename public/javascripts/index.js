@@ -13,6 +13,7 @@ function init() {
     // it sets up the interface so that userId and room are selected
     document.getElementById('initial_form').style.display = 'block';
     document.getElementById('chat_interface').style.display = 'none';
+    registerSW();
 
     initChatSocket();
     initNewsSocket();
@@ -237,4 +238,14 @@ function onDrawingEvent(data){
 function onResize() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+
+function registerSW() {
+    if('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+        .then((reg) => {
+            console.warn(reg.scope);
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
 }
