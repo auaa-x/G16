@@ -249,3 +249,18 @@ function registerSW() {
         });
     }
 }
+    function onResize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    chat.on('update point',()=>{
+        onResize();
+    })
+
+    function delAllPosition() {
+        console.log('clear!');
+        chat.emit('delPos', roomNo);
+        dbObject.put({ "url": picU, "chatList": chatL, "posList": "" }, roomNo);
+
+    }
