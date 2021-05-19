@@ -17,6 +17,7 @@ function init() {
     // it sets up the interface so that userId and room are selected
     document.getElementById('initial_form').style.display = 'block';
     document.getElementById('chat_interface').style.display = 'none';
+    registerSW();
 
     let dbParams = new Object();
     dbParams.db_name = "SISO";
@@ -338,4 +339,15 @@ function delAllPosition() {
     chat.emit('delPos', roomNo);
     dbObject.put({ "url": picU, "chatList": chatL, "posList": "" }, roomNo);
     
+}
+
+function registerSW() {
+    if('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+            .then((reg) => {
+                console.warn(reg.scope);
+            }).catch((error) => {
+            console.error(error);
+        });
+    }
 }
