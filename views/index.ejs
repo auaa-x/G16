@@ -4,25 +4,27 @@
     <title><%= title %></title>
     <script src="/socket.io/socket.io.js"></script>
     <link rel='stylesheet' href='/stylesheets/style.css'/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="/javascripts/index.js"></script>
-    <script src="/javascripts/canvas.js"></script>
-    <script src="/sw.js"></script>
+
 </head>
 <body onload="init()">
 <h1><%= title %></h1>
 <div id="initial_form" style="display: block">
     <p>Please insert the id of the Room you want to Join, if you do not have a room id, click Generate Room</p>
     <form onsubmit="return false;">
-        <p><label for="name"> Your name </label>
-            <input type="text" id="name" name="name">
+        <p>
+            <label for="name"> Your name </label>
+            <input type="text" id="username" name="username">
         </p>
         <p>
             <label for="roomNo"> Your room </label>
             <input type="text" id="roomNo" name="roomNo">
             <button id="roomNoGenerator" onclick="generateRoom()">Generate Room</button>
         </p>
-        <button id="connect" onclick="connectToRoom()">Connect</button>
+        <p>
+            <label for="pic"> Your picUrl </label>
+            <input type="text" id="pic" name="pic">
+        </p>
+        <button id="connect" onclick="connectToRoom()">Connect Onlogin</button>
     </form>
 </div>
 <div id="chat_interface" style="display: none">
@@ -37,7 +39,16 @@
               <div class="color blue"></div>
               <div class="color yellow"></div>
             </div>
+            <div class="pic">
+                <!-- <p>hello world</p> -->
+                <img id="showpic" height="250" width="300" alt="picture is loading..." />
+            </div>
+
+            <div class="icon" onclick="delAllPosition()">
+                <img id="showpic" height="28" width="30" src="https://lx-1305913165.cos.ap-nanjing.myqcloud.com/shuaxin.jpg"/>
+            </div>
         </div>
+        
         <div>
             <div id="who_you_are" style="display: inline"></div>
             , you are chatting in room:
@@ -69,5 +80,6 @@
     </div>
 </div>
 </body>
+<script src="/javascripts/indexDb.js"></script>
 <script src="/javascripts/index.js"></script>
 </html>
