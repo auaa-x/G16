@@ -75,3 +75,14 @@ a {
 .color.green { background-color: green; }
 .color.blue { background-color: blue; }
 .color.yellow { background-color: yellow; }
+
+.pic{
+  display: inline-block;
+  padding:100px;
+}
+
+.icon{
+  position: absolute;
+  display: inline-block;
+  left:650px;
+}
