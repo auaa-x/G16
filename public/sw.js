@@ -1,15 +1,17 @@
-const saveCacheKey = 'v1';
+const saveCacheKey = 'v3';
+const filesToCache = [
+    '/',
+    '/javascripts/index.js',
+    '/stylesheets/style.css',
+    'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'
+]
 
 this.addEventListener('install', (event) => {
+    console.log('[Service Worker] Install');
     event.waitUntil(
         caches.open(saveCacheKey).then((cache) => {
-            return cache.addAll([
-                '/',
-                '/javascripts/index.js',
-                '/javascripts/canvas.js',
-                '/stylesheets/style.css',
-                'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'
-            ])
+            console.log('[Service Worker] Caching app shell');
+            return cache.addAll(filesToCache);
         })
     );
 });
