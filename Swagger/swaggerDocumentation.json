@@ -1,0 +1,127 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "ChatRoom",
+    "description": "ChatRoom",
+    "termsOfService": "http://api_url/terms/",
+    "version": "1.0.0",
+    "contact": {
+      "name": "COM3504/6504",
+      "email": "yzhang476@sheffield.ac.uk",
+      "url": "http://shef.ac.uk"
+    },
+  "license": {
+    "name": "Apache 2.0",
+    "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+  }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3002/",
+      "description": "the only Local server"
+    }
+  ],
+  "paths": {
+"/enter_message": {
+  "post": {
+    "tags": [
+      "showing enter message"
+    ],
+    "description":"showing enter message - Displays the user name and corresponding room name",
+    "operationId": "enter message",
+    "requestBody": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "ref": "#components/schemas/User"
+          }
+        }
+      },
+      "required": true
+    },
+    "responses": {
+      "200": {
+        "description": "Correct input of User name and Chat room name",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/User"
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "Missing parameters",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "message": "Did not enter the same chat room",
+              "internal_code": "missing_parameters"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+  },
+  "components": {
+    "schemas": {
+    "Your name": {
+      "type": "string",
+      "example": "YuruiZhang"
+    },
+    "Your room": {
+      "type": "string",
+      "example": "R1824"
+    },
+     "Your PicUrl": {
+       "type": "string",
+       "example": "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3430692674,459091344&fm=26&gp=0.jpg"
+     },
+     "Chat": {
+       "type": "string",
+       "example": "Good morning"
+     } ,
+     "User":  {
+       "type": "object",
+       "properties": {
+         "Your name": {
+           "$ref": "#/components/schemas/Your name"
+         },
+         "Your room": {
+           "$ref": "#/components/schemas/Your room"
+         }
+       }
+     },
+     "Message": {
+       "type": "object",
+       "properties": {
+         "Your name": {
+           "$ref": "#/components/schemas/Your name"
+         },
+         "Chat": {
+           "$ref": "/components/schemas/Chat"
+         }
+       }
+     } ,
+      "Error": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "internal_code": {
+            "type": "string"
+          }
+        }
+      }
+
+    }
+  }
+}
+
+
