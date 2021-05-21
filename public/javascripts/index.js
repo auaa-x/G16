@@ -9,6 +9,39 @@ let chatL = [];
 let posL = [];
 
 /**
+ * it sends an Ajax query using JQuery
+ * @param url the url to send to
+ * @param data the data to send (e.g. a Javascript structure)
+ */
+function sendAjaxQuery(url, data) {
+    $.ajax({
+        url: url ,
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        type: 'POST'
+    });
+}
+
+/**
+ * called when the submit button is pressed
+ * @param event the submission event
+ */
+function submitData(url) {
+    console.log('submitData()');
+    // The .serializeArray() method creates a JavaScript array of objects
+    // https://api.jquery.com/serializearray/
+    const formArray= $("form").serializeArray();
+    const data={};
+    for (let index in formArray){
+        data[formArray[index].name]= formArray[index].value;
+    }
+    console.log(data);
+    // const data = JSON.stringify($(this).serializeArray());
+    sendAjaxQuery(url, data);
+}
+
+/**
  * called by <body onload>
  * it initialises the interface and the expected socket messages
  * plus the associated actions
@@ -182,6 +215,8 @@ function connectToRoom() {
     setTimeout(() => {
         initIndexDB();
     }, 3000);
+
+    submitData('/users/add');
 }
 
 /**
@@ -338,7 +373,7 @@ function delAllPosition() {
     console.log('clear!');
     chat.emit('delPos', roomNo);
     dbObject.put({ "url": picU, "chatList": chatL, "posList": "" }, roomNo);
-    
+
 }
 
 function registerSW() {
