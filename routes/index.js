@@ -6,4 +6,7 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Image Browsing' });
 });
 
+router.post('/', function(req, res, next) {
+  // do something w/ req.body or req.files
+});
 module.exports = router;
