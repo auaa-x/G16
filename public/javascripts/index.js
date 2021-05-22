@@ -1,7 +1,6 @@
 let username = null;
 let roomNo = null;
 let chat = io.connect('/chat');
-let socket=null;
 
 /**
  * it sends an Ajax query using JQuery
@@ -82,7 +81,10 @@ function initChatSocket() {
         if (userId === name) who = 'Me';
         writeOnChatHistory('<b>' + who + ':</b> ' + chatText);
     });
-
+    // update canvas
+    chat.on('drawing', (room, userId, width, height, prevX, prevY, currX, currY, color, thickness) => {
+        drawOnCanvas(width, height, prevX, prevY, currX, currY, color, thickness);
+    })
 }
 
 /**
@@ -116,7 +118,7 @@ function connectToRoom() {
     // join the room
     chat.emit('create or join', roomNo, name);
 
-    initCanvas(socket, imageUrl);
+    initCanvas(chat, imageUrl, roomNo, name);
     hideLoginInterface(roomNo, name);
 
     submitData('/users/add');

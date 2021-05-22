@@ -4,21 +4,26 @@
 let room;
 let userId;
 let color = 'red', thickness = 4;
+let ctx;
 
 /**
  * it inits the image canvas to draw on. It sets up the events to respond to (click, mouse on, etc.)
  * it is also the place where the data should be sent  via socket.io
  * @param sckt the open socket to register events on
  * @param imageUrl teh image url to download
+ * @param rm
+ * @param id
  */
-function initCanvas(sckt, imageUrl) {
-    socket = sckt;
+function initCanvas(sckt, imageUrl, rm, id) {
+    room = rm;
+    userId = id;
+    let socket = sckt;
     let flag = false,
         prevX, prevY, currX, currY = 0;
     let canvas = $('#canvas');
     let cvx = document.getElementById('canvas');
     let img = document.getElementById('image');
-    let ctx = cvx.getContext('2d');
+    ctx = cvx.getContext('2d');
     img.src = imageUrl;
 
     // event on the canvas when the mouse is on it
@@ -36,20 +41,20 @@ function initCanvas(sckt, imageUrl) {
         // if the flag is up, the movement of the mouse draws on the canvas
         if (e.type === 'mousemove') {
             if (flag) {
-                drawOnCanvas(ctx, canvas.width, canvas.height, prevX, prevY, currX, currY, color, thickness);
-                // @todo if you draw on the canvas, you may want to let everyone know via socket.io (socket.emit...)  by sending them
-                // room, userId, canvas.width, canvas.height, prevX, prevY, currX, currY, color, thickness
+                drawOnCanvas(canvas.width, canvas.height, prevX, prevY, currX, currY, color, thickness);
+                socket.emit('drawing', room, userId, canvas.width, canvas.height, prevX, prevY, currX, currY, color, thickness);
             }
         }
     });
 
-    // this is code left in case you need to  provide a button clearing the canvas (it is suggested that you implement it)
+    // this is code left in case you need to provide a button clearing the canvas (it is suggested that you implement it)
     $('.canvas-clear').on('click', function (e) {
         let c_width = canvas.width();
         let c_height = canvas.height();
         ctx.clearRect(0, 0, c_width, c_height);
-        // @todo if you clear the canvas, you want to let everyone know via socket.io (socket.emit...)
 
+        // @todo if you clear the canvas, you want to let everyone know via socket.io (socket.emit...)
+        socket.emit('chat', roomNo, name, 'The canvas was cleared.');
     });
 
     // @todo here you want to capture the event on the socket when someone else is drawing on their canvas (socket.on...)
@@ -121,7 +126,7 @@ function drawImageScaled(img, canvas, ctx) {
  * @param color of the line
  * @param thickness of the line
  */
-function drawOnCanvas(ctx, canvasWidth, canvasHeight, prevX, prevY, currX, currY, color, thickness) {
+function drawOnCanvas(canvasWidth, canvasHeight, prevX, prevY, currX, currY, color, thickness) {
     //get the ration between the current canvas and the one it has been used to draw on the other comuter
     let ratioX= canvas.width/canvasWidth;
     let ratioY= canvas.height/canvasHeight;

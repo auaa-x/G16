@@ -18,6 +18,9 @@ exports.init = function(io) {
                 socket.on('disconnect', function(){
                     console.log('someone disconnected');
                 });
+                socket.on('drawing', (room, userId, width, height, prevX, prevY, currX, currY, color, thickness) => {
+                    chat.to(room).emit('drawing', room, userId, width, height, prevX, prevY, currX, currY, color, thickness);
+                });
                 socket.on('delPos',(roomId)=>{
                     chat.to(roomId).emit('update point');
                     n.delete_pic(roomId);
