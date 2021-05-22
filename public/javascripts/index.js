@@ -151,23 +151,6 @@ function initChatSocket() {
     })
 }
 
-/**
- * it initialises the socket for /news
- */
-function initNewsSocket() {
-    news.on('joined', function (room, userId) {
-        if (userId !== username) {
-            // notifies that someone has joined the room
-            writeOnNewsHistory('<b>' + userId + '</b>' + ' joined news room ' + room);
-        }
-    });
-
-    // called when some news is received (note: only news received by others are received)
-    news.on('news', function (room, userId, newsText) {
-        writeOnNewsHistory('<b>' + userId + ':</b> ' + newsText);
-    });
-}
-
 
 /**
  * called when the Send button is pressed. It gets the text to send from the interface
@@ -177,16 +160,6 @@ function sendChatText() {
     let chatText = document.getElementById('chat_input').value;
     chat.emit('chat', roomNo, username, chatText);
 }
-/**
- * called when the Send button is pressed for news. It gets the text to send from the interface
- * and sends the message via  socket
- */
-function sendNewsText() {
-    let newsText = document.getElementById('news_input').value;
-    news.emit('news', roomNo, username, newsText);
-    document.getElementById('news_input').value = '';
-}
-
 /**
  * used to connect to a room. It gets the user name and room number from the
  * interface
@@ -229,18 +202,6 @@ function writeOnChatHistory(text) {
     paragraph.innerHTML = text;
     history.appendChild(paragraph);
     document.getElementById('chat_input').value = '';
-}
-
-/**
- * it appends the given html text to the history div
- * @param text: teh text to append
- */
-function writeOnNewsHistory(text) {
-    let history = document.getElementById('news_history');
-    let paragraph = document.createElement('p');
-    paragraph.innerHTML = text;
-    history.appendChild(paragraph);
-    document.getElementById('news_input').value = '';
 }
 
 /**
