@@ -1,8 +1,8 @@
-const CACHE_NAME = 'v3';
+const CACHE_NAME = 'v1';
 
 const filesToCache = [
-    '/',
-    '/javascripts/index.js',
+    // '/',
+    // '/javascripts/index.js',
     '/stylesheets/style.css',
 ]
 

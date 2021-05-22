@@ -1,7 +1,4 @@
-
 exports.init = function(io) {
-
-    // the chat namespace
     const chat= io
         .of('/chat')
         .on('connection', function (socket) {
@@ -21,6 +18,10 @@ exports.init = function(io) {
                 socket.on('disconnect', function(){
                     console.log('someone disconnected');
                 });
+                socket.on('delPos',(roomId)=>{
+                    chat.to(roomId).emit('update point');
+                    n.delete_pic(roomId);
+                })
             } catch (e) {
             }
         });
