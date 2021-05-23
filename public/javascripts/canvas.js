@@ -147,5 +147,4 @@ function drawOnCanvas(canvasWidth, canvasHeight, prevX, prevY, currX, currY, col
 function delAllPosition() {
     console.log('clear!');
     chat.emit('delPos', roomNo);
-    dbObject.put({ "url": picU, "chatList": chatL, "posList": "" }, roomNo);
 }
