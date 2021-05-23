@@ -4,7 +4,9 @@
 let room;
 let userId;
 let color = 'red', thickness = 4;
+let cvx;
 let ctx;
+
 
 /**
  * it inits the image canvas to draw on. It sets up the events to respond to (click, mouse on, etc.)
@@ -21,7 +23,7 @@ function initCanvas(sckt, imageUrl, rm, id) {
     let flag = false,
         prevX, prevY, currX, currY = 0;
     let canvas = $('#canvas');
-    let cvx = document.getElementById('canvas');
+    cvx = document.getElementById('canvas');
     let img = document.getElementById('image');
     ctx = cvx.getContext('2d');
     img.src = imageUrl;
@@ -49,13 +51,11 @@ function initCanvas(sckt, imageUrl, rm, id) {
 
     // this is code left in case you need to provide a button clearing the canvas (it is suggested that you implement it)
     $('.canvas-clear').on('click', function (e) {
-        let c_width = canvas.width();
-        let c_height = canvas.height();
-        ctx.clearRect(0, 0, c_width, c_height);
-
-        // @todo if you clear the canvas, you want to let everyone know via socket.io (socket.emit...)
-        socket.emit('chat', roomNo, name, 'The canvas was cleared.');
+        // clearCanvas();
+        drawImageScaled(img, cvx, ctx);
+        socket.emit('clear canvas', room, userId);
     });
+
 
     // @todo here you want to capture the event on the socket when someone else is drawing on their canvas (socket.on...)
     // I suggest that you receive userId, canvasWidth, canvasHeight, x1, y21, x2, y2, color, thickness
@@ -92,6 +92,13 @@ function initCanvas(sckt, imageUrl, rm, id) {
     });
 }
 
+function clearCanvas() {
+    let c_width = cvx.width;
+    let c_height = cvx.height;
+    ctx.clearRect(0, 0, c_width, c_height);
+}
+
+
 /**
  * called when it is required to draw the image on the canvas. We have resized the canvas to the same image size
  * so ti is simpler to draw later
@@ -107,8 +114,6 @@ function drawImageScaled(img, canvas, ctx) {
     let x = (canvas.width / 2) - (img.width / 2) * scale;
     let y = (canvas.height / 2) - (img.height / 2) * scale;
     ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
-
-
 }
 
 
@@ -127,7 +132,7 @@ function drawImageScaled(img, canvas, ctx) {
  * @param thickness of the line
  */
 function drawOnCanvas(canvasWidth, canvasHeight, prevX, prevY, currX, currY, color, thickness) {
-    //get the ration between the current canvas and the one it has been used to draw on the other comuter
+    //get the ration between the current canvas and the one it has been used to draw on the other computer
     let ratioX= canvas.width/canvasWidth;
     let ratioY= canvas.height/canvasHeight;
     // update the value of the points to draw
@@ -142,10 +147,4 @@ function drawOnCanvas(canvasWidth, canvasHeight, prevX, prevY, currX, currY, col
     ctx.lineWidth = thickness;
     ctx.stroke();
     ctx.closePath();
-}
-
-function delAllPosition() {
-    console.log('clear!');
-    chat.emit('delPos', roomNo);
-    dbObject.put({ "url": picU, "chatList": chatL, "posList": "" }, roomNo);
 }

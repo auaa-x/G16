@@ -77,14 +77,21 @@ function initChatSocket() {
     });
     // called when a message is received
     chat.on('chat', function (room, userId, chatText) {
-        let who = userId
+        let who = userId;
         if (userId === name) who = 'Me';
         writeOnChatHistory('<b>' + who + ':</b> ' + chatText);
     });
     // update canvas
     chat.on('drawing', (room, userId, width, height, prevX, prevY, currX, currY, color, thickness) => {
         drawOnCanvas(width, height, prevX, prevY, currX, currY, color, thickness);
-    })
+    });
+    // clean canvas
+    chat.on('clear canvas', (room, userId) => {
+        let who = userId;
+        if (userId === name) who = 'Me';
+        writeOnChatHistory('Canvas just cleared by ' + who + '.');
+        clearCanvas();
+    });
 }
 
 /**
