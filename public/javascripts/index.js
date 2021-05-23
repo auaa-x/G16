@@ -1,5 +1,6 @@
-let username = null;
+let name = null;
 let roomNo = null;
+let roomId = null;
 let chat = io.connect('/chat');
 
 /**
@@ -9,7 +10,7 @@ let chat = io.connect('/chat');
  */
 function sendAjaxQuery(url, data) {
     $.ajax({
-        url: url ,
+        url: url,
         data: JSON.stringify(data),
         contentType: 'application/json',
         dataType: 'json',
@@ -26,7 +27,7 @@ function sendAjaxQuery(url, data) {
 
 /**
  * called when the submit button is pressed
- * @param event the submission event
+ * @param url
  */
 function submitData(url) {
     console.log('submitData()');
@@ -70,8 +71,6 @@ function init() {
     else {
         console.log('This browser doesn\'t support IndexedDB');
     }
-
-
 }
 
 /**
@@ -80,27 +79,27 @@ function init() {
 
 function initChatSocket() {
     // called when someone joins the room. If it is someone else it notifies the joining of the room
-    chat.on('joined', function (room, userId) {
+    chat.on('joined', function (roomId, userId, roomNo) {
         if (userId === name) {
             // it enters the chat
-            hideLoginInterface(room, userId);
+            hideLoginInterface(roomNo, userId);
         } else {
             // notifies that someone has joined the room
-            writeOnChatHistory('<b>' + userId + '</b>' + ' joined room ' + room);
+            writeOnChatHistory('<b>' + userId + '</b>' + ' joined room ' + roomNo);
         }
     });
     // called when a message is received
-    chat.on('chat', function (room, userId, chatText) {
+    chat.on('chat', function (roomId, userId, chatText) {
         let who = userId;
         if (userId === name) who = 'Me';
         writeOnChatHistory('<b>' + who + ':</b> ' + chatText);
     });
     // update canvas
-    chat.on('drawing', (room, userId, width, height, prevX, prevY, currX, currY, color, thickness) => {
+    chat.on('drawing', (roomId, userId, width, height, prevX, prevY, currX, currY, color, thickness) => {
         drawOnCanvas(width, height, prevX, prevY, currX, currY, color, thickness);
     });
     // clean canvas
-    chat.on('clear canvas', (room, userId) => {
+    chat.on('clear canvas', (roomId, userId) => {
         let who = userId;
         if (userId === name) who = 'Me';
         writeOnChatHistory('Canvas just cleared by ' + who + '.');
@@ -108,9 +107,8 @@ function initChatSocket() {
     });
 }
 
-async function displayChatHistory(roomNo) {
-    window.roomNo = roomNo
-    let data = await getCachedData(roomNo);
+async function displayChatHistory(roomId) {
+    let data = await getCachedData(roomId);
     console.log(data)
     if (data && data.length > 0) {
         for (let res of data)
@@ -134,8 +132,8 @@ function generateRoom() {
  */
 function sendChatText() {
     let chatText = document.getElementById('chat_input').value;
-    chat.emit('chat', roomNo, name, chatText);
-    storeCachedData({roomNo: roomNo, name: name, message: chatText});
+    chat.emit('chat', roomId, name, chatText);
+    storeCachedData({roomNo: roomId, name: name, message: chatText});
 }
 
 /**
@@ -147,11 +145,13 @@ function connectToRoom() {
     name = document.getElementById('username').value;
     let imageUrl= document.getElementById('image_url').value;
     if (!name) name = 'Unknown-' + Math.random();
+    roomId = roomNo + '-' + imageUrl
+
+    initCanvas(chat, imageUrl, roomId, name);
+
     // join the room
-    initCanvas(chat, imageUrl, roomNo, name);
-    hideLoginInterface(roomNo, name);
-    chat.emit('create or join', roomNo, name);
-    displayChatHistory(roomNo);
+    chat.emit('create or join', roomId, name, roomNo);
+    displayChatHistory(roomId);
 
     submitData('/users/add');
 }
@@ -175,11 +175,11 @@ function writeOnChatHistory(text) {
 /**
  * it hides the initial form and shows the chat
  * @param room the selected room
- * @param userId the user name
+ * @param user
  */
-function hideLoginInterface(room, userId) {
+function hideLoginInterface(room, user) {
     document.getElementById('initial_form').style.display = 'none';
     document.getElementById('chat_interface').style.display = 'block';
-    document.getElementById('who_you_are').innerHTML= userId;
+    document.getElementById('who_you_are').innerHTML= user;
     document.getElementById('in_room').innerHTML= ' '+room;
 }

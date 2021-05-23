@@ -6,24 +6,23 @@ exports.init = function(io) {
                 /**
                  * it creates or joins a room
                  */
-                socket.on('create or join', function (room, userId) {
-                    socket.join(room);
-                    chat.to(room).emit('joined', room, userId);
+                socket.on('create or join', function (roomId, userId, roomNo) {
+                    socket.join(roomId);
+                    chat.to(roomId).emit('joined', roomId, userId, roomNo);
                 });
 
-                socket.on('chat', function (room, userId, chatText) {
-                    chat.to(room).emit('chat', room, userId, chatText);
+                socket.on('chat', function (roomId, userId, chatText) {
+                    chat.to(roomId).emit('chat', roomId, userId, chatText);
                 });
 
                 socket.on('disconnect', function(){
                     console.log('someone disconnected');
                 });
-                socket.on('drawing', (room, userId, width, height, prevX, prevY, currX, currY, color, thickness) => {
-                    chat.to(room).emit('drawing', room, userId, width, height, prevX, prevY, currX, currY, color, thickness);
+                socket.on('drawing', (roomId, userId, width, height, prevX, prevY, currX, currY, color, thickness) => {
+                    chat.to(roomId).emit('drawing', roomId, userId, width, height, prevX, prevY, currX, currY, color, thickness);
                 });
-                socket.on('delPos',(roomId)=>{
-                    chat.to(roomId).emit('update point');
-                    n.delete_pic(roomId);
+                socket.on('clear canvas', (roomId, userId) => {
+                    chat.in(roomId).emit('clear canvas', roomId, userId);
                 })
             } catch (e) {
             }
