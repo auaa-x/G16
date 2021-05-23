@@ -13,7 +13,14 @@ function sendAjaxQuery(url, data) {
         data: JSON.stringify(data),
         contentType: 'application/json',
         dataType: 'json',
-        type: 'POST'
+        type: 'POST',
+        success: function (dataR) {
+            if (document.getElementById('offline_div') != null)
+                document.getElementById('offline_div').style.display = 'none';
+        },
+        error: function (response) {
+            alert(response.responseText);
+        }
     });
 }
 
@@ -55,9 +62,16 @@ function init() {
     // it sets up the interface so that userId and room are selected
     document.getElementById('initial_form').style.display = 'block';
     document.getElementById('chat_interface').style.display = 'none';
-
     registerSW();
     initChatSocket();
+    if ('indexedDB' in window) {
+        initDatabase();
+    }
+    else {
+        console.log('This browser doesn\'t support IndexedDB');
+    }
+
+
 }
 
 /**
@@ -87,6 +101,16 @@ function initChatSocket() {
     })
 }
 
+async function displayChatHistory(roomNo) {
+    window.roomNo = roomNo
+    let data = await getCachedData(roomNo);
+    console.log(data)
+    if (data && data.length > 0) {
+        for (let res of data)
+            writeOnChatHistory('<b>' + res.name + ':</b> ' + res.message);
+    }
+}
+
 /**
  * called to generate a random room number
  * This is a simplification. A real world implementation would ask the server to generate a unique room number
@@ -104,6 +128,7 @@ function generateRoom() {
 function sendChatText() {
     let chatText = document.getElementById('chat_input').value;
     chat.emit('chat', roomNo, name, chatText);
+    storeCachedData({roomNo: roomNo, name: name, message: chatText});
 }
 
 /**
@@ -116,10 +141,10 @@ function connectToRoom() {
     let imageUrl= document.getElementById('image_url').value;
     if (!name) name = 'Unknown-' + Math.random();
     // join the room
-    chat.emit('create or join', roomNo, name);
-
     initCanvas(chat, imageUrl, roomNo, name);
     hideLoginInterface(roomNo, name);
+    chat.emit('create or join', roomNo, name);
+    displayChatHistory(roomNo);
 
     submitData('/users/add');
 }
@@ -151,4 +176,3 @@ function hideLoginInterface(room, userId) {
     document.getElementById('who_you_are').innerHTML= userId;
     document.getElementById('in_room').innerHTML= ' '+room;
 }
-
