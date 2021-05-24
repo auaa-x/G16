@@ -20,7 +20,7 @@ function sendAjaxQuery(url, data) {
                 document.getElementById('offline_div').style.display = 'none';
         },
         error: function (response) {
-            alert(response.responseText);
+            console.log(response.responseText);
         }
     });
 }
@@ -105,6 +105,13 @@ function initChatSocket() {
         writeOnChatHistory('Canvas just cleared by ' + who + '.');
         clearCanvas();
     });
+    // update image info panel
+    chat.on('update panel', (userId, imageTitle, imageAuthor, imageDp) => {
+        let who = userId;
+        if (userId === name) who = 'Me';
+        writeOnChatHistory('Image information panel just updated by ' + who + '.');
+        writeOnPanel(imageTitle, imageAuthor, imageDp);
+    })
 }
 
 async function displayChatHistory(roomId) {
@@ -143,7 +150,7 @@ function sendChatText() {
 function connectToRoom() {
     roomNo = document.getElementById('roomNo').value;
     name = document.getElementById('username').value;
-    let imageUrl= document.getElementById('image_url').value;
+    let imageUrl= document.getElementById('imageUrl').value;
     if (!name) name = 'Unknown-' + Math.random();
     roomId = roomNo + '-' + imageUrl
 
@@ -151,7 +158,7 @@ function connectToRoom() {
 
     // join the room
     chat.emit('create or join', roomId, name, roomNo);
-    displayChatHistory(roomId);
+    displayChatHistory(roomId).then(r => {});
 
     submitData('/users/add');
 }
@@ -182,4 +189,22 @@ function hideLoginInterface(room, user) {
     document.getElementById('chat_interface').style.display = 'block';
     document.getElementById('who_you_are').innerHTML= user;
     document.getElementById('in_room').innerHTML= ' '+room;
+}
+
+/**
+ * Update the image information panel for everyone
+ */
+function updatePanel() {
+    let imageTitle = document.getElementById('imageTitle').value;
+    let imageAuthor = document.getElementById('imageAuthor').value;
+    let imageDp = document.getElementById('imageDp').value;
+
+    submitData('/users/updatePanel');
+    chat.emit('update panel', roomId, name, roomNo, imageTitle, imageAuthor, imageDp);
+}
+
+function writeOnPanel(title, author, dp) {
+    document.getElementById('imageTitle').value = title;
+    document.getElementById('imageAuthor').value = author;
+    document.getElementById('imageDp').value = dp;
 }

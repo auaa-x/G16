@@ -23,6 +23,9 @@ exports.init = function(io) {
                 });
                 socket.on('clear canvas', (roomId, userId) => {
                     chat.in(roomId).emit('clear canvas', roomId, userId);
+                });
+                socket.on('update panel', (roomId, userId, roomNo, imageTitle, imageAuthor, imageDp) => {
+                    chat.to(roomId).emit('update panel', userId, imageTitle, imageAuthor, imageDp);
                 })
             } catch (e) {
             }

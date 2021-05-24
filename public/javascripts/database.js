@@ -34,7 +34,7 @@ async function initDatabase(){
     }
 }
 
-window.initDatabase= initDatabase();
+window.initDatabase= initDatabase;
 
 async function storeCachedData(data) {
     if (!db)
