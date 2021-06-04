@@ -183,7 +183,7 @@ function writeOnChatHistory(text) {
  */
 function hideLoginInterface(room, user) {
     document.getElementById('initial_form').style.display = 'none';
-    document.getElementById('chat_interface').style.display = 'block';
+    document.getElementById('chat_interface').style.display = 'flex';
     document.getElementById('who_you_are').innerHTML= user;
     document.getElementById('in_room').innerHTML= ' '+room;
 }

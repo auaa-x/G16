@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const fs = require('fs');
 const fetch = require('node-fetch');
+const path = require('path');
 
 var user = require('../controllers/users');
 var initDB = require('../controllers/init');
@@ -52,7 +53,9 @@ router.post('/updatePanel', user.updatePanel);
  */
 async function fetchImg(imageUrl) {
     const timestamp = Math.floor(Date.now() / 1000);
-    const dir = './public/assets';
+
+    let dir = __dirname + '/../';
+    dir = path.join(dir, 'public/assets');
     const imagePath = `${dir}/${timestamp}.png`;
     let response = await fetch(imageUrl);
     let buffer = await response.buffer();
