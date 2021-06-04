@@ -8,17 +8,14 @@ let chat = io.connect('/chat');
  * @param url the url to send to
  * @param data the data to send (e.g. a Javascript structure)
  */
-function sendAjaxQuery(url, data) {
+function sendAjaxQuery(url, data, callback) {
     $.ajax({
         url: url,
         data: JSON.stringify(data),
         contentType: 'application/json',
         dataType: 'json',
         type: 'POST',
-        success: function (dataR) {
-            if (document.getElementById('offline_div') != null)
-                document.getElementById('offline_div').style.display = 'none';
-        },
+        success: callback,
         error: function (response) {
             console.log(response.responseText);
         }
@@ -38,9 +35,12 @@ function submitData(url) {
     for (let index in formArray){
         data[formArray[index].name]= formArray[index].value;
     }
-    console.log(data);
+
+    const callback = () => {
+        console.log('Data submitted');
+    }
     // const data = JSON.stringify($(this).serializeArray());
-    sendAjaxQuery(url, data);
+    sendAjaxQuery(url, data, callback);
 }
 
 function registerSW() {
@@ -154,6 +154,7 @@ function connectToRoom() {
     if (!name) name = 'Unknown-' + Math.random();
     roomId = roomNo + '-' + imageUrl
 
+    submitData('/image_save');
     initCanvas(chat, imageUrl, roomId, name);
 
     // join the room
