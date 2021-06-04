@@ -18,25 +18,19 @@ a {
 }
 
 /* Split the screen in half */
-.split {
-    height: 100%;
-    position: fixed;
-    z-index: 1;
-    top: 0;
+.scrolling {
     overflow-x: hidden;
-    padding-left: 20px;
-    padding-right: 20px;
+    overflow-y: auto;
 }
 
 /* Image information panel */
 #info_panel {
     display: inline-block;
-    position: absolute;
 }
 
 #right_panel {
-    grid-template-rows: 1fr 3fr;
-    grid-row-gap: 50px;
+    display: flex;
+    flex-direction: column;
 }
 
 .text {
@@ -46,13 +40,11 @@ a {
 /* Control the left side */
 .left {
     left: 0;
-    display: inline-grid;
 }
 
 /* Control the right side */
 .right {
     right: 0;
-    display: inline-grid;
     margin-right: 100px;
 }
 
@@ -74,14 +66,12 @@ a {
     top: 0;
 }
 
-.colors {
-    position: fixed;
-}
-
 .color {
     display: inline-block;
     height: 48px;
     width: 48px;
+    float: right;
+    margin-right: 5px;
 }
 
 .color.black {
@@ -102,17 +92,6 @@ a {
 
 .color.yellow {
     background-color: yellow;
-}
-
-.pic {
-    display: inline-block;
-    padding: 100px;
-}
-
-.icon {
-    position: absolute;
-    display: inline-block;
-    left: 650px;
 }
 
 label {

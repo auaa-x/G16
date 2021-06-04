@@ -38,79 +38,82 @@
     </form>
 </div>
 <div id="chat_interface" style="display: none">
-    <div class="split left">
-        <div>
-            <p><div id="who_you_are" style="display: inline" style="height: 10vh"></div>, you are in room: <div id="in_room" style="display: inline"></div>
-        </div>
-        <div style="width: 100%; height: 50vh">
-            <img id="image" height="100%" >
-            <canvas id="canvas" ></canvas>
-        </div>
-        <div class="boxed colors">
-            <div class="color black"></div>
-            <div class="color red"></div>
-            <div class="color green"></div>
-            <div class="color blue"></div>
-            <div class="color yellow"></div>
+    <div style="position: relative;">
+        <p>
+            <span id="who_you_are" style="display: inline" style="height: 10vh"></span>, you are in room: <span id="in_room" style="display: inline"></span>
+        </p>
+
+        <div style="display: flex;">
+            <div style="flex: 1;height: 50vh">
+                <img id="image" height="100%" >
+                <canvas id="canvas" ></canvas>
+            </div>
+
+<!--            <div class="colors">-->
+<!--                <div class="color black"></div>-->
+<!--                <div class="color red"></div>-->
+<!--                <div class="color green"></div>-->
+<!--                <div class="color blue"></div>-->
+<!--                <div class="color yellow"></div>-->
+<!--            </div>-->
+
+            <div id="right_panel" style="flex: 1;width: 500px;">
+                <form id="info_panel" style="width: 100%" onsubmit="return false;">
+                    <div class="left">
+                        <p> About the image </p>
+                        <p>
+                            <label for="imageTitle" style="min-width: 6ch;">Title</label>
+                            <input id="imageTitle" name="imageTitle" class="text"/>
+                        </p>
+                        <p>
+                            <label for="imageAuthor" style="min-width: 6ch;">Author</label>
+                            <input id="imageAuthor" name="imageAuthor" class="text"/>
+                        </p>
+                    </div>
+                    <div>
+                        <label for="imageDp"> Description</label>
+                        <div>
+                            <textarea id="imageDp" name="imageDp" class="text"
+                                      style="height: 80px; resize: none"></textarea>
+                        </div>
+                        <button id="update" style="width: 60px" onclick="updatePanel()"> Update</button>
+                    </div>
+                </form>
+                <div>
+                    <div style="margin-bottom: 10px">
+                        <label for="myType">Type </label><input type="text" id="myType" style="margin-right: 5px">
+                        <button onclick="widgetInit()">Set type</button>
+                    </div>
+
+                    <div>
+                        <label for="myInput">Search for </label><input type="text" id="myInput">
+                    </div>
+                    <div>
+                        <div class='resultPanel' id="resultPanel" style="display: none">
+                            <h3 id="resultName"></h3>
+                            <h4 id="resultId"></h4>
+                            <div id="resultDescription"></div>
+                            <div>
+                                <a id="resultUrl" target="_blank">
+                                    Link to Webpage
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <!--    </div>-->
         <div id="history" style="height: 35vh" class="boxed scrolling" ></div>
-        <div id="input" style="height: 5vh" class="boxed">
-            <form onsubmit="return false;" style="width: 100%">
-                <p>
-                    <label for="name"> chat: </label>
-                    <input type="text" id="chat_input" name="chat_input" style="width: 80%">
-                    <button id="chat_send" onclick="sendChatText()">Send</button>
-                </p>
-            </form>
-        </div>
+        <form onsubmit="return false;" class="boxed" style="width: 100%; height: 5vh; position: fixed;">
+            <p>
+                <label for="name"> chat: </label>
+                <input type="text" id="chat_input" name="chat_input" style="width: 80%">
+                <button id="chat_send" onclick="sendChatText()">Send</button>
+            </p>
+        </form>
     </div>
-    <div class="split right" id="right_panel" style="width: 500px;">
-        <div id="info_div" style="width: 30vw; margin-top: 30px">
-            <form id="info_panel" style="width: 100%" onsubmit="return false;">
-                <div class="left" style="margin-right: 40px">
-                    <p> About the image </p>
-                    <label for="imageTitle"> Title </label>
-                    <input id="imageTitle" name="imageTitle" class="text"/>
-                    <label for="imageAuthor"> Author </label>
-                    <input id="imageAuthor" name="imageAuthor" class="text"/>
-                </div>
-                <div class="right">
-                    <label for="imageDp"> Description</label>
-                    <div>
-                        <textarea id="imageDp" name="imageDp" class="text"
-                                  style="height: 80px; resize: none"></textarea>
-                    </div>
-                    <button id="update" style="width: 60px" onclick="updatePanel()"> Update</button>
-                </div>
-            </form>
-        </div>
-        <div>
-            <div style="margin-bottom: 10px">
-                <!--            <div class="myRow" id="typeForm">-->
-                <label for="myType">Type </label><input type="text" id="myType" style="margin-right: 5px">
-                <button onclick="widgetInit()">Set type</button>
-            </div>
-
-            <div>
-                <!--            <div class="myRow" id='widget' style="display: none">-->
-                <label for="myInput">Search for </label><input type="text" id="myInput">
-            </div>
-            <div>
-                <div class='resultPanel' id="resultPanel" style="display: none">
-                    <h3 id="resultName"></h3>
-                    <h4 id="resultId"></h4>
-                    <div id="resultDescription"></div>
-                    <div>
-                        <a id="resultUrl" target="_blank">
-                            Link to Webpage
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </div>
 </body>
 <script type="module" src="/javascripts/database.js"></script>
