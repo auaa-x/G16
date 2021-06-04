@@ -158,7 +158,6 @@ function connectToRoom() {
     submitData('/users/add', (res) => {
         initCanvas(chat, res.imageUrl, roomId, name);
     });
-
 }
 
 /**

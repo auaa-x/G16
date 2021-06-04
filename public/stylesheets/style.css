@@ -1,97 +1,125 @@
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
-  color: #00B7FF;
+    color: #00B7FF;
 }
 
 .boxed {
-  width: 100%;
-  padding:10px;
+    width: 100%;
+    padding: 10px;
 }
+
 .bottom {
-  position: absolute;
-  bottom: 10px;
-  width: 90%;
+    position: absolute;
+    bottom: 10px;
+    width: 90%;
 }
 
 /* Split the screen in half */
 .split {
-  height: 100%;
-  width: 50%;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  overflow-x: hidden;
-  padding-top: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
+    height: 100%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 /* Image information panel */
 #info_panel {
     display: inline-block;
     position: absolute;
-    margin-left: 40px;
 }
+
+#right_panel {
+    grid-template-rows: 1fr 3fr;
+    grid-row-gap: 50px;
+}
+
 .text {
     margin-bottom: 15px;
 }
 
 /* Control the left side */
 .left {
-  left: 0;
-  background-color: #ffffff;
+    left: 0;
+    display: inline-grid;
 }
 
 /* Control the right side */
 .right {
-  right: 0;
-  background-color: #228B22;
-  color: white;
+    right: 0;
+    display: inline-grid;
+    margin-right: 100px;
 }
 
 .board {
-  height: 400px;
+    height: 400px;
 }
+
 /**
  * Canvas
  */
 
- .whiteboard {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: 0;
+.whiteboard {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
 }
 
 .colors {
-  position: fixed;
+    position: fixed;
 }
 
 .color {
-  display: inline-block;
-  height: 48px;
-  width: 48px;
+    display: inline-block;
+    height: 48px;
+    width: 48px;
 }
 
-.color.black { background-color: black; }
-.color.red { background-color: red; }
-.color.green { background-color: green; }
-.color.blue { background-color: blue; }
-.color.yellow { background-color: yellow; }
-
-.pic{
-  display: inline-block;
-  padding:100px;
+.color.black {
+    background-color: black;
 }
 
-.icon{
-  position: absolute;
-  display: inline-block;
-  left:650px;
+.color.red {
+    background-color: red;
+}
+
+.color.green {
+    background-color: green;
+}
+
+.color.blue {
+    background-color: blue;
+}
+
+.color.yellow {
+    background-color: yellow;
+}
+
+.pic {
+    display: inline-block;
+    padding: 100px;
+}
+
+.icon {
+    position: absolute;
+    display: inline-block;
+    left: 650px;
+}
+
+label {
+    margin-right: 5px;
+}
+
+input {
+    margin-right: 5px;
 }

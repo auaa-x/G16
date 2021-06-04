@@ -6,12 +6,18 @@
     <script src="/socket.io/socket.io.js"></script>
     <link rel='stylesheet' href='/stylesheets/style.css'/>
     <script src="/sw.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/knowledge/kgsearch/widget/1.0/widget.min.css">
+    <script type="text/javascript" src="https://www.gstatic.com/knowledge/kgsearch/widget/1.0/widget.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="/javascripts/index.js"></script>
     <script src="/javascripts/canvas.js"></script>
     <script src="/javascripts/database.js"></script>
+    <script src="/javascripts/kg.js"></script>
 </head>
 <body onload="init()">
-<div id="initial_form" style="display: block">
+<div id="initial_form" style="display: block; padding: 20px 0 0 40px">
     <h1><%= title %></h1>
     <p>Please insert the id of the Room you want to Join, if you do not have a room id, click Generate Room</p>
     <form onsubmit="return false;">
@@ -32,36 +38,67 @@
     </form>
 </div>
 <div id="chat_interface" style="display: none">
-    <div>
-        <p><div id="who_you_are" style="display: inline" style="height: 10vh"></div>, you are in room: <div id="in_room" style="display: inline"></div>
+    <div class="split left">
+        <div>
+            <p>
+            <div id="who_you_are" style="display: inline" style="height: 10vh"></div>
+            , you are in room:
+            <div id="in_room" style="display: inline"></div>
+        </div>
+        <div>
+            <div style="width: 100%; height: 50vh; position: relative">
+                <img id="image" height="100%">
+                <canvas id="canvas"></canvas>
+            </div>
+        </div>
+        <div id="history" style="height: 35vh" class="boxed scrolling"></div>
     </div>
-    </p>
-    <div>
-        <div style="width: 100%; height: 50vh; position: relative">
-            <img id="image" height="100%" >
-            <canvas  id="canvas" ></canvas>
-            <form id="info_panel"  style="width: 15vw" onsubmit="return false;">
-                <p> About the image </p>
-                <label for="imageTitle"> Title </label>
-                <div>
+    <div class="split right" id="right_panel" style="width: 500px;">
+        <div id="info_div" style="width: 30vw; margin-top: 30px">
+            <form id="info_panel" style="width: 100%" onsubmit="return false;">
+                <div class="left" style="margin-right: 40px">
+                    <p> About the image </p>
+                    <label for="imageTitle"> Title </label>
                     <input id="imageTitle" name="imageTitle" class="text"/>
-                </div>
-                <label for="imageAuthor"> Author </label>
-                <div>
+                    <label for="imageAuthor"> Author </label>
                     <input id="imageAuthor" name="imageAuthor" class="text"/>
                 </div>
-                <label for="imageDp"> Description</label>
-                <div>
-                    <textarea id="imageDp" name="imageDp" class="text" style="height: 80px; resize: none"></textarea>
+                <div class="right">
+                    <label for="imageDp"> Description</label>
+                    <div>
+                        <textarea id="imageDp" name="imageDp" class="text"
+                                  style="height: 80px; resize: none"></textarea>
+                    </div>
+                    <button id="update" style="width: 60px" onclick="updatePanel()"> Update</button>
                 </div>
-                <button id="update" onclick="updatePanel()"> Update </button>
             </form>
         </div>
-    </div>
+        <div>
+            <div style="margin-bottom: 10px">
+                <!--            <div class="myRow" id="typeForm">-->
+                <label for="myType">Type </label><input type="text" id="myType" style="margin-right: 5px">
+                <button onclick="widgetInit()">Set type</button>
+            </div>
 
-    <!--    </div>-->
-    <div id="history" style="height: 35vh" class="boxed scrolling" ></div>
-    <div id="input" style="height: 5vh" class=" boxed">
+            <div>
+<!--            <div class="myRow" id='widget' style="display: none">-->
+            <label for="myInput">Search for </label><input type="text" id="myInput">
+            </div>
+            <div>
+                <div class='resultPanel' id="resultPanel" style="display: none">
+                    <h3 id="resultName"></h3>
+                    <h4 id="resultId"></h4>
+                    <div id="resultDescription"></div>
+                    <div>
+                        <a id="resultUrl" target="_blank">
+                            Link to Webpage
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="input" style="height: 5vh" class="bottom boxed">
         <form onsubmit="return false;" style="width: 100%">
             <p>
                 <label for="name"> chat: </label>
