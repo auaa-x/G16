@@ -12,11 +12,11 @@ let ctx;
  * it inits the image canvas to draw on. It sets up the events to respond to (click, mouse on, etc.)
  * it is also the place where the data should be sent  via socket.io
  * @param sckt the open socket to register events on
- * @param imageUrl teh image url to download
+ * @param imagePath
  * @param rm
  * @param id
  */
-function initCanvas(sckt, imageUrl, rm, id) {
+function initCanvas(sckt, imagePath, rm, id) {
     room = rm;
     userId = id;
     let socket = sckt;
@@ -26,7 +26,7 @@ function initCanvas(sckt, imageUrl, rm, id) {
     cvx = document.getElementById('canvas');
     let img = document.getElementById('image');
     ctx = cvx.getContext('2d');
-    img.src = imageUrl;
+    img.src = imagePath;
 
     // event on the canvas when the mouse is on it
     canvas.on('mousemove mousedown mouseup mouseout', function (e) {

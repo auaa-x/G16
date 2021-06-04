@@ -7,6 +7,7 @@ let chat = io.connect('/chat');
  * it sends an Ajax query using JQuery
  * @param url the url to send to
  * @param data the data to send (e.g. a Javascript structure)
+ * @param callback
  */
 function sendAjaxQuery(url, data, callback) {
     $.ajax({
@@ -25,8 +26,9 @@ function sendAjaxQuery(url, data, callback) {
 /**
  * called when the submit button is pressed
  * @param url
+ * @param callback
  */
-function submitData(url) {
+function submitData(url, callback) {
     console.log('submitData()');
     // The .serializeArray() method creates a JavaScript array of objects
     // https://api.jquery.com/serializearray/
@@ -34,10 +36,6 @@ function submitData(url) {
     const data={};
     for (let index in formArray){
         data[formArray[index].name]= formArray[index].value;
-    }
-
-    const callback = () => {
-        console.log('Data submitted');
     }
     // const data = JSON.stringify($(this).serializeArray());
     sendAjaxQuery(url, data, callback);
@@ -154,14 +152,13 @@ function connectToRoom() {
     if (!name) name = 'Unknown-' + Math.random();
     roomId = roomNo + '-' + imageUrl
 
-    submitData('/image_save');
-    initCanvas(chat, imageUrl, roomId, name);
-
     // join the room
     chat.emit('create or join', roomId, name, roomNo);
     displayChatHistory(roomId).then(r => {});
+    submitData('/users/add', (res) => {
+        initCanvas(chat, res.imageUrl, roomId, name);
+    });
 
-    submitData('/users/add');
 }
 
 /**
