@@ -17,7 +17,6 @@ function widgetInit(){
             'selectHandler': selectItem,
         }
         KGSearchWidget(apiKey, document.getElementById("myInput"), config);
-        document.getElementById('typeSet').innerHTML= 'of type: '+type;
         document.getElementById('widget').style.display='block';
         document.getElementById('typeForm').style.display= 'none';
     }
@@ -36,14 +35,21 @@ function widgetInit(){
  */
 function selectItem(event){
     let row= event.row;
-    // document.getElementById('resultImage').src= row.json.image.url;
-    document.getElementById('resultId').innerText= 'id: '+row.id;
-    document.getElementById('resultName').innerText= row.name;
-    document.getElementById('resultDescription').innerText= row.rc;
-    document.getElementById("resultUrl").href= row.qc;
-    document.getElementById('resultPanel').style.display= 'block';
     let color = getColor();
-    document.getElementById('resultPanel').style.border= `2px solid ${color}`;
+    // document.getElementById('resultImage').src= row.json.image.url;
+    const result = `
+                    <div class='resultPanel' style="width: 50vh; word-break: break-word;padding-left: 10px; border: 2px solid ${color}; margin-bottom: 10px">
+                    <h3 id="resultName" style="margin: 10px 0 0 0;">${row.name}</h3>
+                    <h4 id="resultId">${'id: '+row.id}</h4>
+                    <div id="resultDescription">${row.rc}</div>
+                    <div>
+                        <a href="${row.qc}" id="resultUrl" target="_blank">
+                            Link to Webpage
+                        </a>
+                    </div>
+                </div>
+`;
+    document.getElementById('resultId').innerHTML += result;
 }
 
 /**

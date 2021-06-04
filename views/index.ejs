@@ -21,7 +21,7 @@
 </head>
 
 <body onload="init()">
-<div id="initial_form" style="display: block">
+<div id="initial_form" style="display: block; margin: 30px 0 0 40px">
     <h1>
         <%= title %>
     </h1>
@@ -63,8 +63,8 @@
         </div>
         <div id="history" style="min-height: 35vh; margin-top: 48px;" class="boxed"></div>
     </div>
-    <div id="right_panel" style="flex: 1; margin-left: 20px;">
-        <form id="info_panel" style="width: 100%" onsubmit="return false;">
+    <div id="right_panel" style="flex: 1; margin-left: 100px;">
+        <form id="info_panel" style="width: 100%; margin-top: 30px; margin-bottom: 50px" onsubmit="return false;">
             <div class="left">
                 <p> About the image </p>
                 <p>
@@ -76,7 +76,7 @@
                     <input id="imageAuthor" name="imageAuthor" class="text" />
                 </p>
             </div>
-            <div>
+            <div class="right">
                 <label for="imageDp"> Description</label>
                 <div>
                         <textarea id="imageDp" name="imageDp" class="text"
@@ -94,17 +94,8 @@
             <div>
                 <label for="myInput">Search for </label><input type="text" id="myInput">
             </div>
-            <div>
-                <div class='resultPanel' id="resultPanel" style="display: none; word-break: break-word;white-space: pre;">
-                    <h3 id="resultName"></h3>
-                    <h4 id="resultId"></h4>
-                    <div id="resultDescription"></div>
-                    <div>
-                        <a id="resultUrl" target="_blank">
-                            Link to Webpage
-                        </a>
-                    </div>
-                </div>
+            <div id="resultId">
+
             </div>
         </div>
     </div>
