@@ -12,6 +12,6 @@ router.get('/', function(req, res, next) {
 
 router.post('/add', user.checkExist);
 
-// router.post('/updatePanel', user.updatePanel);
+router.post('/updatePanel', user.updatePanel);
 
 module.exports = router;

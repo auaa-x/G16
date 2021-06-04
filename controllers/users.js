@@ -11,9 +11,9 @@ function insert(req, res) {
             user_name: userData.username,
             room_id: userData.roomNo,
             image_path: userData.imageUrl,
-            // image_title: '',
-            // image_author: '',
-            // image_dp: ''
+            image_title: ' ',
+            image_author: ' ',
+            image_dp: ' '
         });
         console.log('received: ' + user);
 
@@ -53,20 +53,31 @@ exports.checkExist = (req, res) => {
         });
 }
 
-// exports.updatePanel = (req, res) => {
-//     console.log("Updating image info panel...");
-//     let panelData = req.body;
-//     console.log(panelData);
-//
-//     User.updateOne( {
-//         room_id: panelData.roomNo,
-//         image_path: panelData.imageUrl
-//     }, {
-//         $set: {
-//             image_title: panelData.imageTitle,
-//             image_author: panelData.imageAuthor,
-//             image_dp: panelData.imageDp,
-//         }
-//         });
-// }
-//
+exports.updatePanel = (req, res) => {
+    console.log("Updating image info to mongo db...");
+    let panelData = req.body;
+    console.log(panelData);
+
+    User.updateOne({
+        room_id: panelData.roomNo,
+        image_path: panelData.imageUrl},
+        {
+            $set : {
+            image_title: panelData.imageTitle,
+            image_dp: panelData.imageDp,
+            image_author: panelData.imageAuthor
+            }}, function(err) {
+        if(err) {
+            console.log(err);
+        } else {
+            console.log("Mongo db successfully updated.");
+        }
+    });
+
+    // User.findOne({ 'room_id': panelData.roomNo}, 'image_path', function (err, user) {
+    //     if (err) return handleError(err);
+    //     // Prints "Space Ghost is a talk show host".
+    //     console.log('title: ' + user.image_path);
+    // });
+}
+
