@@ -11,7 +11,7 @@
     "ejs": "~2.6.1",
     "express": "~4.16.1",
     "fs": "0.0.1-security",
-    "http-errors": "~1.6.3",
+    "http-errors": "^1.6.3",
     "mongoose": "^5.12.10",
     "morgan": "~1.9.1",
     "node-fetch": "^2.6.1",

@@ -3,10 +3,10 @@
  */
 let room;
 let userId;
+let colors = document.getElementsByClassName('color');
 let color = 'red', thickness = 4;
 let cvx;
 let ctx;
-
 
 /**
  * it inits the image canvas to draw on. It sets up the events to respond to (click, mouse on, etc.)
@@ -27,6 +27,9 @@ function initCanvas(sckt, imagePath, rm, id) {
     let img = document.getElementById('image');
     ctx = cvx.getContext('2d');
     img.src = imagePath;
+    for (var i = 0; i < colors.length; i++){
+        colors[i].addEventListener('click', onColorUpdate, false);
+    }
 
     // event on the canvas when the mouse is on it
     canvas.on('mousemove mousedown mouseup mouseout', function (e) {
@@ -147,4 +150,13 @@ function drawOnCanvas(canvasWidth, canvasHeight, prevX, prevY, currX, currY, col
     ctx.lineWidth = thickness;
     ctx.stroke();
     ctx.closePath();
+}
+
+function onColorUpdate(e){
+    color = e.target.className.split(' ')[1];
+    console.log(color + ' just get selected');
+}
+
+function getColor(){
+    return color;
 }

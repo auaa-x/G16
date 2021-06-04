@@ -3,7 +3,7 @@ const CACHE_NAME = 'v1';
 const filesToCache = [
     // '/',
     // '/javascripts/index.js',
-    '/stylesheets/style.css',
+    // '/stylesheets/style.css',
 ]
 
 self.addEventListener('install', (event) => {

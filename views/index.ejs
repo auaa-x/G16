@@ -6,9 +6,15 @@
     <script src="/socket.io/socket.io.js"></script>
     <link rel='stylesheet' href='/stylesheets/style.css'/>
     <script src="/sw.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/knowledge/kgsearch/widget/1.0/widget.min.css">
+    <script type="text/javascript" src="https://www.gstatic.com/knowledge/kgsearch/widget/1.0/widget.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="/javascripts/index.js"></script>
     <script src="/javascripts/canvas.js"></script>
     <script src="/javascripts/database.js"></script>
+    <script src="/javascripts/kg.js"></script>
 </head>
 <body onload="init()">
 <div id="initial_form" style="display: block">
@@ -38,11 +44,18 @@
         </div>
         <div style="width: 100%; height: 50vh">
             <img id="image" height="100%" >
-            <canvas  id="canvas" ></canvas>
+            <canvas id="canvas" ></canvas>
+        </div>
+        <div class="boxed colors">
+            <div class="color black"></div>
+            <div class="color red"></div>
+            <div class="color green"></div>
+            <div class="color blue"></div>
+            <div class="color yellow"></div>
         </div>
         <!--    </div>-->
         <div id="history" style="height: 35vh" class="boxed scrolling" ></div>
-        <div id="input" style="height: 5vh" class=" boxed">
+        <div id="input" style="height: 5vh" class="boxed">
             <form onsubmit="return false;" style="width: 100%">
                 <p>
                     <label for="name"> chat: </label>

@@ -42,6 +42,8 @@ function selectItem(event){
     document.getElementById('resultDescription').innerText= row.rc;
     document.getElementById("resultUrl").href= row.qc;
     document.getElementById('resultPanel').style.display= 'block';
+    let color = getColor();
+    document.getElementById('resultPanel').style.border= `2px solid ${color}`;
 }
 
 /**
